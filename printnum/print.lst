@@ -1,0 +1,29 @@
+     1                                  ; print.asm
+     2                                  
+     3                                  extern printf
+     4                                  
+     5                                  section .data
+     6 00000000 25640A00                	fmt db "%d",10,0
+     7                                  
+     8                                  section .bss
+     9                                  section .text
+    10                                  	global main
+    11                                  
+    12                                  main:
+    13 00000000 55                      	push rbp
+    14 00000001 4889E5                  	mov rbp, rsp
+    15                                  
+    16 00000004 BB00000000              	mov rbx, 0
+    17                                  
+    18                                  bloop:
+    19 00000009 48BF-                   	mov rdi, fmt
+    19 0000000B [0000000000000000] 
+    20 00000013 4889DE                  	mov rsi, rbx
+    21 00000016 B800000000              	mov rax, 0
+    22 0000001B E8(00000000)            	call printf
+    23 00000020 48FFC3                  	inc rbx
+    24 00000023 E2E4                    	loop bloop
+    25                                  
+    26 00000025 4889EC                  	mov rsp, rbp
+    27 00000028 5D                      	pop rbp
+    28 00000029 C3                      	ret

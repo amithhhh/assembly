@@ -1,0 +1,40 @@
+     1                                  ; example.asm
+     2                                  section .data
+     3 00000000 7B                      	bNum db 123
+     4 00000001 3930                    	wNum dw 12345
+     5 00000003 D2029649                	dNum dd 1234567890
+     6 00000007 1581E97DF4102211        	qNum1 dq 1234567890123456789
+     7 0000000F 40E2010000000000        	qNum2 dq 123456
+     8 00000017 1F85EB51B81E0940        	qNum3 dq 3.14
+     9                                  section .bss
+    10                                  section .text
+    11                                  	global main
+    12                                  main:
+    13 00000000 55                      	push rbp
+    14 00000001 4889E5                  	mov rbp, rsp
+    15                                  	
+    16 00000004 48C7C0FFFFFFFF          	mov rax, -1	;fill rax with 1s
+    17 0000000B 8A0425[00000000]        	mov al, byte [bNum]	;does not clear upper bits of rax
+    18 00000012 4831C0                  	xor rax, rax	;clear rax
+    19 00000015 8A0425[00000000]        	mov al, byte [bNum]
+    20                                  
+    21 0000001C 48C7C0FFFFFFFF          	mov rax, -1	;fill rax with 1s
+    22 00000023 668B0425[01000000]      	mov ax, word [wNum]
+    23 0000002B 4831C0                  	xor rax, rax
+    24 0000002E 668B0425[01000000]      	mov ax, word [wNum]
+    25                                  
+    26 00000036 48C7C0FFFFFFFF          	mov rax, -1
+    27 0000003D 8B0425[03000000]        	mov eax, dword [dNum]
+    28 00000044 48C7C0FFFFFFFF          	mov rax, -1
+    29 0000004B 488B0425[07000000]      	mov rax, qword [qNum1]
+    30                                  
+    31 00000053 48890425[0F000000]      	mov qword [qNum2], rax
+    32                                  
+    33 0000005B B840E20100              	mov rax, 123456
+    34                                  
+    35 00000060 F30F7E0425-             	movq xmm0, [qNum3]
+    35 00000065 [17000000]         
+    36                                  
+    37 00000069 4889EC                  	mov rsp, rbp
+    38 0000006C 5D                      	pop rbp
+    39 0000006D C3                      ret

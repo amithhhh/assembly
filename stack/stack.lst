@@ -1,0 +1,71 @@
+     1                                  ; stack.asm
+     2                                  
+     3                                  extern printf
+     4                                  
+     5                                  section .data
+     6 00000000 414243444500            	string		db		"ABCDE",0
+     7                                  	stringlen	equ		$ - string - 1
+     8 00000006 546865204F72696769-     	fmt1		db		"The Original String: %s",10,0
+     8 0000000F 6E616C20537472696E-
+     8 00000018 673A2025730A00     
+     9 0000001F 546865205265766572-     	fmt2		db		"The Reversed String: %s",10,0
+     9 00000028 73656420537472696E-
+     9 00000031 673A2025730A00     
+    10                                  section .bss
+    11                                  section .text
+    12                                  	global main
+    13                                  
+    14                                  main:
+    15 00000000 55                      	push rbp
+    16 00000001 4889E5                  	mov rbp, rsp
+    17                                  
+    18                                  	;print original string
+    19                                  
+    20 00000004 48BF-                   	mov rdi, fmt1
+    20 00000006 [0600000000000000] 
+    21 0000000E 48BE-                   	mov rsi, string
+    21 00000010 [0000000000000000] 
+    22 00000018 B800000000              	mov rax, 0
+    23 0000001D E8(00000000)            	call printf
+    24                                  
+    25                                  	;push the string char per char on stack
+    26                                  
+    27 00000022 4831C0                  	xor rax, rax
+    28 00000025 48BB-                   	mov rbx, string
+    28 00000027 [0000000000000000] 
+    29 0000002F B905000000              	mov rcx, stringlen
+    30 00000034 41BC00000000            	mov r12, 0
+    31                                  
+    32                                  	pushLoop:
+    33 0000003A 428A0423                		mov al, byte [rbx+r12]
+    34 0000003E 50                      		push rax
+    35 0000003F 49FFC4                  		inc r12
+    36 00000042 E2F6                    		loop pushLoop
+    37                                  
+    38                                  	;pop the char per char from stack
+    39                                  
+    40 00000044 48BB-                   	mov rbx, string
+    40 00000046 [0000000000000000] 
+    41 0000004E B905000000              	mov rcx, stringlen
+    42 00000053 41BC00000000            	mov r12, 0
+    43                                  
+    44                                  	popLoop:
+    45 00000059 58                      		pop rax
+    46 0000005A 42880423                		mov byte [rbx+r12], al
+    47 0000005E 49FFC4                  		inc r12
+    48 00000061 E2F6                    		loop popLoop
+    49 00000063 42C6042300              		mov byte [rbx+r12], 0
+    50                                  
+    51                                  	;print the reversed string
+    52                                  
+    53 00000068 48BF-                   	mov rdi, fmt2
+    53 0000006A [1F00000000000000] 
+    54 00000072 48BE-                   	mov rsi, string
+    54 00000074 [0000000000000000] 
+    55 0000007C B800000000              	mov rax, 0
+    56 00000081 E8(00000000)            	call printf
+    57                                  
+    58 00000086 4889EC                  	mov rsp, rbp
+    59 00000089 5D                      	pop rbp
+    60 0000008A C3                      	ret
+    61                                  

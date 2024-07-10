@@ -1,0 +1,40 @@
+     1                                  ; age.asm
+     2                                  
+     3                                  extern printf
+     4                                  
+     5                                  section .data
+     6 00000000 0C00000000000000        	age dq 12
+     7 00000008 5B2B5D205475206573-     	fmt1 db "[+] Tu estas eligible",10,0
+     7 00000011 74617320656C696769-
+     7 0000001A 626C650A00         
+     8 0000001F 5B2D5D205475206E6F-     	fmt2 db "[-] Tu no estas eligible",10,0
+     8 00000028 20657374617320656C-
+     8 00000031 696769626C650A00   
+     9                                  
+    10                                  section .bss
+    11                                  section .text
+    12                                  	global main
+    13                                  
+    14                                  main:
+    15 00000000 55                      	push rbp
+    16 00000001 4889E5                  	mov rbp, rsp
+    17                                  
+    18 00000004 488B0425[00000000]      	mov rax, [age]		;moving age to rax
+    19 0000000C 4883F812                	cmp rax, 0x12
+    20 00000010 7D16                    	jge eligible		;if age >= 18 control goes to eligible
+    21                                  
+    22 00000012 48BF-                   	mov rdi, fmt2
+    22 00000014 [1F00000000000000] 
+    23 0000001C B800000000              	mov rax, 0		;no xmm is using
+    24 00000021 E8(00000000)            	call printf
+    25 00000026 EB14                    	jmp exit
+    26                                  
+    27                                  eligible:
+    28 00000028 48BF-                   	mov rdi, fmt1
+    28 0000002A [0800000000000000] 
+    29 00000032 B800000000              	mov rax, 0
+    30 00000037 E8(00000000)            	call printf
+    31                                  	
+    32                                  exit:
+    33 0000003C 4889EC                  	mov rsp, rbp
+    34 0000003F 5D                      	pop rbp

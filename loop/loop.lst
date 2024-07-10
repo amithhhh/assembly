@@ -1,0 +1,38 @@
+     1                                  ; loop.asm
+     2                                  
+     3                                  extern printf
+     4                                  
+     5                                  section .data
+     6 00000000 F401000000000000        	num dq 500
+     7 00000008 73756D206F66202830-     	fmt db "sum of (0-%ld) is: %ld",10,0
+     7 00000011 2D256C64292069733A-
+     7 0000001A 20256C640A00       
+     8                                  
+     9                                  section .bss
+    10                                  section .text
+    11                                  	global main
+    12                                  
+    13                                  main:
+    14 00000000 55                      	push rbp
+    15 00000001 4889E5                  	mov rbp, rsp
+    16                                  
+    17 00000004 BB00000000              	mov rbx, 0		;counter
+    18 00000009 B800000000              	mov rax, 0		;sum will be stored here
+    19                                  
+    20                                  jloop:
+    21 0000000E 4801D8                  	add rax, rbx
+    22 00000011 48FFC3                  	inc rbx
+    23 00000014 483B1C25[00000000]      	cmp rbx, [num]		;compare counter with num
+    24 0000001C 7EF0                    	jle jloop		;if it is less jloop will execute again
+    25                                  
+    26                                  	;after loop control comes here
+    27                                  
+    28 0000001E 48BF-                   	mov rdi, fmt
+    28 00000020 [0800000000000000] 
+    29 00000028 488B3425[00000000]      	mov rsi, [num]
+    30 00000030 4889C2                  	mov rdx, rax
+    31 00000033 B800000000              	mov rax, 0
+    32 00000038 E8(00000000)            	call printf
+    33 0000003D 4889EC                  	mov rsp, rbp
+    34 00000040 5D                      	pop rbp
+    35 00000041 C3                      	ret

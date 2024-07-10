@@ -1,0 +1,58 @@
+     1                                  ; calculator.asm
+     2                                  
+     3                                  extern printf
+     4                                  
+     5                                  section .data
+     6 00000000 456E74657220546865-     	prompt		db		"Enter The numbers",10,0
+     6 00000009 206E756D626572730A-
+     6 00000012 00                 
+     7 00000013 256C640A00              	format      	db      	"%ld", 10, 0
+     8 00000018 1400000000000000        	length		dq		20
+     9                                  section .bss
+    10 00000000 <res A0h>               	num1            resq              20
+    11 000000A0 <res A0h>                       num2            resq              20
+    12                                  
+    13                                  section .text
+    14                                  	global main
+    15                                  
+    16                                  main:
+    17 00000000 55                      	push rbp
+    18 00000001 4889E5                  	mov rbp, rsp
+    19                                  
+    20                                  	;print prompt
+    21                                  
+    22 00000004 48BF-                   	mov rdi, prompt
+    22 00000006 [0000000000000000] 
+    23 0000000E B800000000              	mov rax, 0
+    24 00000013 E8(00000000)            	call printf
+    25                                  
+    26                                  	;reading num1
+    27                                  
+    28 00000018 B800000000              	mov rax, 0
+    29 0000001D BF00000000              	mov rdi, 0
+    30 00000022 48BE-                   	mov rsi, num1
+    30 00000024 [0000000000000000] 
+    31 0000002C 48BA-                   	mov rdx, length
+    31 0000002E [1800000000000000] 
+    32 00000036 0F05                    	syscall
+    33                                  
+    34                                  	;reading num2
+    35                                  
+    36 00000038 B800000000              	mov rax, 0
+    37 0000003D BF00000000              	mov rdi, 0
+    38 00000042 48BE-                   	mov rsi, num2
+    38 00000044 [A000000000000000] 
+    39 0000004C 48BA-                   	mov rdx, length
+    39 0000004E [1800000000000000] 
+    40 00000056 0F05                    	syscall
+    41                                  
+    42 00000058 B800000000              	mov rax, 0
+    43 0000005D 48BF-                   	mov rdi, format
+    43 0000005F [1300000000000000] 
+    44 00000067 48BE-                   	mov rsi, num1
+    44 00000069 [0000000000000000] 
+    45 00000071 E8(00000000)            	call printf
+    46                                  
+    47 00000076 4889EC                  	mov rsp, rbp
+    48 00000079 5D                      	pop rbp
+    49 0000007A C3                      	ret

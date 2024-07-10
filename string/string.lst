@@ -1,0 +1,27 @@
+     1                                  ; string.asm
+     2                                  
+     3                                  extern printf
+     4                                  
+     5                                  section .data
+     6 00000000 61626364656600          	text db "abcdef",0
+     7 00000007 737472696E67206973-     	fmtstmt db "string is %s",10,0
+     7 00000010 2025730A00         
+     8                                  
+     9                                  section .bss
+    10                                  
+    11                                  section .text
+    12                                  	global main
+    13                                  
+    14                                  main:
+    15 00000000 55                      	push rbp
+    16 00000001 4889E5                  	mov rbp,rsp
+    17                                  
+    18 00000004 B800000000              	mov rax, 0
+    19 00000009 488B3425[01000000]      	mov rsi, [text+1]
+    20 00000011 48BA-                   	mov rdx, fmtstmt
+    20 00000013 [0700000000000000] 
+    21 0000001B E8(00000000)            	call printf
+    22                                  
+    23 00000020 4889EC                  	mov rsp, rbp
+    24 00000023 5D                      	pop rbp
+    25 00000024 C3                      	ret
